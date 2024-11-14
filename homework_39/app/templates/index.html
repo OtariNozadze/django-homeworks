@@ -2,6 +2,17 @@
 
 {% block content %}
 
+<div class="container">
+    <div class="row">
+        <div class="col-12">
+            <form method="get" class="d-flex justify-content-end">
+                <input type="text" class="form-control w-auto" name="search" placeholder="Search...">
+                <button type="submit" class="btn btn-primary ml-2">Search</button>
+            </form>
+        </div>
+    </div>
+</div>
+{% include 'categories_filter.html' %}
 {% include 'book.html' %}
 
 {% endblock %}
