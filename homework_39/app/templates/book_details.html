@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container d-flex justify-content-center align-items-center" style="min-height: 80vh;">
+    <div class="border border-secondary p-4" style="max-width: 600px; width: 100%; background-color: white;">
+        <h1>{{ book.name }}</h1>
+        <p><strong>Author:</strong> {{ book.author }}</p>
+        <p><strong>Categories:</strong> {{ book.categories.all|join:", " }}</p>
+        <p><strong>ISBN:</strong> {{ book.isbn }}</p>
+        <p><strong>Description:</strong> {{ book.description }}</p>
+    </div>
+</div>
+
+<div class="container mt-4">
+    <h2>Related Books:</h2>
+    <div class="row">
+        {% for related_book in related_books %}
+            <div class="col-md-4">
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ related_book.name }}</h5>
+                        <p><strong>Author:</strong> {{ related_book.author }}</p>
+                        <p><strong>Categories:</strong> {{ related_book.categories.all|join:", " }}</p>
+                        <p><strong>ISBN:</strong> {{ related_book.isbn }}</p>
+                        <p><strong>Description:</strong> {{ related_book.description|truncatewords:30 }}</p>
+                        <a href="{% url 'app:book_details' related_book.id %}" class="btn btn-secondary mt-auto align-self-center">View Details</a>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}
