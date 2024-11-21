@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect
 from .models import Category, Book
 from .forms import BookForm
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
+from django.contrib.auth.decorators import login_required
 def index(request):
     filter_book = request.GET.get('search')
     filter_category = request.GET.getlist('category')
@@ -28,7 +29,7 @@ def index(request):
     return render(request, 'index.html', {'books': books, 'categories': categories})
 
 
-
+@login_required(login_url='/users/login/')
 def add_book(request):
     if request.method == 'POST':
         form = BookForm(request.POST)
