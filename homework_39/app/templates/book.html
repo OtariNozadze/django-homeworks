@@ -3,6 +3,11 @@
         {% for book in books %}
             <div class="col-md-4">
                 <div class="card mb-4">
+                {% if book.picture %}
+                    <img src="{{ book.picture.url }}" class="card-img-top" alt="...">
+                {% else %}
+                    <img src="https://th.bing.com/th/id/R.7620105b3b7fa34bad109e5ae298dfee?rik=oWq1P3tIpkj0hw&pid=ImgRaw&r=0" class="card-img-top" alt="...">
+                {% endif %}
                     <div class="card-body">
                         <h5 class="card-title">{{ book.name }}</h5>
                         <p><strong>Author:</strong> {{ book.author }}</p>
@@ -10,6 +15,7 @@
                         <p><strong>ISBN:</strong> {{ book.isbn }}</p>
                         <p><strong>Description:</strong> {{ book.description|truncatewords:30 }}</p>
                         <a href="{% url 'app:book_details' book.id %}" class="btn btn-secondary mt-auto align-self-center">View Details</a>
+                        <a href="{% url 'orders:add_cart_item' book.id %}" class="btn btn-secondary mt-auto align-self-center">Order</a>
                     </div>
                 </div>
             </div>

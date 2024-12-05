@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container">
+
+    <h2>My Cart</h2>
+    {% if ordered_items %}
+
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Book</th>
+                    <th>Quantity</th>
+                    <th>Price</th>
+                    <th>Total</th>
+                    <th>Time Of Order</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                {% for item in ordered_items %}
+
+                    <tr>
+                        <td>{{ item.book.name }}</td>
+                        <td>{{ item.quantity }}</td>
+                        <td>{{ item.book.price }}</td>
+                        <td>${{ item.total }}</td>
+                        <td>{{ item.ordered_at }}</td>
+                    </tr>
+
+                {% endfor %}
+            </tbody>
+
+        </table>
+
+        <div class="d-flex justify-content-between">
+            <h3>Total Amount: ${{ total_amount }}</h3>
+
+            <div>
+                <a href="{% url 'app:index' %}" class="btn btn-primary">Continue Shopping</a>
+            </div>
+        </div>
+
+    {% else %}
+        <h2>No Orders</h2>
+        <a href="{% url 'app:index' %}" class="btn btn-primary mr-2">Go Back</a>
+    {% endif %}
+
+</div>
+
+{% endblock %}

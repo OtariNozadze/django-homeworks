@@ -16,6 +16,9 @@ class Book(models.Model):
     author = models.CharField(max_length=30)
     description = models.TextField()
     isbn = models.CharField(max_length=13, unique=True)
+    stock = models.PositiveIntegerField(default=0)
+    price = models.DecimalField(max_digits=10, decimal_places=2)
+    picture = models.ImageField(upload_to='books/', default=None, null=True, blank=True)
      
     categories = models.ManyToManyField(Category)
 

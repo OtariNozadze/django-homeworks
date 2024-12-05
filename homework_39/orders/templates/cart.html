@@ -1,0 +1,64 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container">
+
+    <h2>My Cart</h2>
+    {% if cart_items %}
+
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Book</th>
+                    <th>Quantity</th>
+                    <th>Price</th>
+                    <th>Total</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                {% for item in cart_items %}
+
+                    <tr>
+                        <td>{{ item.book.name }}</td>
+                        <td>
+                            <form class="d-flex" action="{% url 'orders:update_cart_item' item.id %}" method="post">
+                                {% csrf_token %}
+                                <input type="number" value="{{ item.quantity }}" min="0" max="{{ item.book.stock }}" class="form-control" name="quantity">
+                                <button type="submit" class="btn btn-primary">Update</button>
+                            </form>
+                        </td>
+                        <td>{{ item.book.price }}</td>
+                        <td>{{ item.total }}</td>
+
+                        <td>
+                            <a href="{% url 'orders:delete_cart_item' item.id %}" class="btn btn-danger">Remove</a>
+                        </td>
+
+                    </tr>
+
+                {% endfor %}
+            </tbody>
+
+        </table>
+
+        <div class="d-flex justify-content-between">
+            <h3>Total Amount: ${{ total_amount }}</h3>
+
+            <div class="d-flex justify-content-between">
+                <a href="{% url 'app:index' %}" class="btn btn-primary mr-2">Continue Shopping</a>
+                <form action="{% url 'orders:add_ordered' %}" method="POST" >
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-success">Proceed To Checkout</button>
+                </form>
+            </div>
+        </div>
+
+    {% else %}
+        <h2>Cart Is Empty</h2>
+        <a href="{% url 'app:index' %}" class="btn btn-primary mr-2">Go Back</a>
+    {% endif %}
+
+</div>
+
+{% endblock %}

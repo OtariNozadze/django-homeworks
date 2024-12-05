@@ -3,6 +3,9 @@ from .models import Category, Book
 from .forms import BookForm
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.contrib.auth.decorators import login_required
+import logging
+
+logger = logging.getLogger(__name__)
 def index(request):
     filter_book = request.GET.get('search')
     filter_category = request.GET.getlist('category')
@@ -21,10 +24,13 @@ def index(request):
     try:
         page_num = request.GET.get('page')
         books = paginator.page(page_num)
+        logger.info(f'page: {page_num}')
     except PageNotAnInteger:
         books = paginator.page(1)
+        logger.error('Not an Integer')
     except EmptyPage:
         books = paginator.page(paginator.num_pages)
+        logger.error(f'Redirecting to {paginator.num_pages}')
 
     return render(request, 'index.html', {'books': books, 'categories': categories})
 
@@ -32,7 +38,7 @@ def index(request):
 @login_required(login_url='/users/login/')
 def add_book(request):
     if request.method == 'POST':
-        form = BookForm(request.POST)
+        form = BookForm(request.POST, request.FILES)
         if form.is_valid():
             form.save()
             return redirect('app:index')
